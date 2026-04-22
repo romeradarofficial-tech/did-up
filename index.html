@@ -3,215 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DidUP - Prototipo Registro Elettronico</title>
+    <title>Argo DidUP - Pro Evolution</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --argo-blue-dark: #004a80;
             --argo-blue-light: #0073bc;
+            --argo-orange: #f39c12;
             --argo-bg: #f4f7f9;
-            --sidebar-width: 240px;
+            --sidebar-width: 260px;
         }
 
-        body, html {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--argo-bg);
-            height: 100%;
-        }
-
-        /* --- LOGIN PAGE --- */
-        #login-screen {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--argo-blue-dark), var(--argo-blue-light));
-        }
-
-        .login-box {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            text-align: center;
-            width: 350px;
-        }
-
-        .login-box h2 { color: var(--argo-blue-dark); margin-bottom: 20px; }
-        .login-box input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .login-box button {
-            width: 100%;
-            padding: 12px;
-            background-color: #f39c12;
-            border: none;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        /* --- APP LAYOUT --- */
-        #app-interface { display: none; height: 100vh; flex-direction: column; }
-
-        header {
-            background: var(--argo-blue-dark);
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .main-container { display: flex; flex: 1; overflow: hidden; }
-
-        /* SIDEBAR */
-        nav {
-            width: var(--sidebar-width);
-            background: white;
-            border-right: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .nav-item {
-            padding: 15px 20px;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-            color: #555;
-            display: flex;
-            align-items: center;
-            transition: 0.3s;
-        }
-
-        .nav-item i { margin-right: 10px; width: 20px; color: var(--argo-blue-light); }
-        .nav-item:hover, .nav-item.active { background: #eef7ff; color: var(--argo-blue-light); border-left: 4px solid var(--argo-blue-light); }
-
-        /* CONTENT AREA */
-        main { flex: 1; padding: 25px; overflow-y: auto; }
-
-        .card { background: white; padding: 20px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        body, html { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--argo-bg); height: 100%; overflow: hidden; }
         
-        table { width: 100%; border-collapse: collapse; background: white; margin-top: 10px; }
-        table th { background: #f8f9fa; color: var(--argo-blue-dark); text-align: left; padding: 12px; border: 1px solid #dee2e6; }
-        table td { padding: 10px; border: 1px solid #dee2e6; }
-
-        .btn-save { background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
-        .grade-input { width: 50px; padding: 5px; text-align: center; }
+        /* Utility */
+        .hidden { display: none !important; }
+        .card { background: white; padding: 20px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-primary { background: var(--argo-blue-light); color: white; }
+        .btn-success { background: #27ae60; color: white; }
         
-        .hidden { display: none; }
-        .selector-bar { margin-bottom: 20px; display: flex; gap: 15px; }
-        select { padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+        /* Login */
+        #login-screen { height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, var(--argo-blue-dark), var(--argo-blue-light)); }
+        .login-box { background: white; padding: 40px; border-radius: 12px; text-align: center; width: 380px; }
+
+        /* Layout */
+        header { background: var(--argo-blue-dark); color: white; padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .wrapper { display: flex; height: calc(100vh - 54px); }
+        
+        nav { width: var(--sidebar-width); background: white; border-right: 1px solid #ddd; overflow-y: auto; }
+        .nav-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #eee; display: flex; align-items: center; color: #444; }
+        .nav-item:hover, .nav-item.active { background: #eef7ff; color: var(--argo-blue-light); border-left: 5px solid var(--argo-blue-light); }
+        .nav-item i { margin-right: 12px; width: 20px; }
+
+        main { flex: 1; padding: 30px; overflow-y: auto; }
+
+        /* Tabelle e Input */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
+        th, td { border: 1px solid #dee2e6; padding: 12px; text-align: left; }
+        th { background: #f8f9fa; }
+        input, select, textarea { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        
+        .badge { padding: 4px 8px; border-radius: 10px; font-size: 0.8rem; color: white; }
+        .bg-red { background: #e74c3c; }
+        .bg-orange { background: #e67e22; }
+        .bg-green { background: #2ecc71; }
+
+        .grade-tag { display: inline-block; background: #eee; padding: 2px 8px; margin: 2px; border-radius: 4px; position: relative; }
+        .delete-grade { color: red; cursor: pointer; margin-left: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
         <div class="login-box">
-            <img src="https://portaleargo.it/v2/assets/img/logo_argo.png" alt="Argo" style="width: 120px; margin-bottom: 20px;">
-            <h2>DidUP</h2>
-            <input type="password" id="password" placeholder="Password (Sacataca.com)">
-            <button onclick="checkLogin()">ACCEDI</button>
-            <p id="login-error" style="color: red; display: none; margin-top: 10px;">Password errata!</p>
+            <img src="https://portaleargo.it/v2/assets/img/logo_argo.png" alt="Argo" style="width: 150px;">
+            <h2 style="color: var(--argo-blue-dark)">Registro Elettronico</h2>
+            <input type="password" id="password" placeholder="Password (Sacataca.com)" style="width: 100%; margin: 20px 0;">
+            <button class="btn btn-primary" style="width: 100%; padding: 15px;" onclick="checkLogin()">ACCEDI</button>
         </div>
     </div>
 
-    <div id="app-interface">
+    <div id="app-interface" class="hidden">
         <header>
-            <div style="font-weight: bold; font-size: 1.2rem;">Argo DidUP - Prototipo Docente</div>
-            <div id="user-info">Prof. Mario Rossi | <a href="#" onclick="location.reload()" style="color: #f39c12; text-decoration: none;">Esci</a></div>
+            <div style="display: flex; align-items: center;">
+                <img src="https://portaleargo.it/v2/assets/img/logo_argo.png" style="height: 30px; filter: brightness(0) invert(1); margin-right: 15px;">
+                <span style="font-size: 1.1rem; font-weight: bold;">DidUP - Gestione Scolastica Avanzata</span>
+            </div>
+            <div>
+                <span id="current-date-display" style="margin-right: 20px;"></span>
+                <button class="btn" style="background: transparent; color: white; border: 1px solid white;" onclick="location.reload()">Esci</button>
+            </div>
         </header>
 
-        <div class="main-container">
-            <nav>
-                <div class="nav-item active" onclick="showSection('dashboard')"><i class="fa fa-home"></i> Dashboard</div>
-                <div class="nav-item" onclick="showSection('reg-classe')"><i class="fa fa-users"></i> Registro di Classe</div>
-                <div class="nav-item" onclick="showSection('reg-prof')"><i class="fa fa-graduation-cap"></i> Registro Professore</div>
-                <div class="nav-item" onclick="showSection('bacheca')"><i class="fa fa-clipboard-list"></i> Bacheca</div>
-                <div class="nav-item" onclick="showSection('orario')"><i class="fa fa-calendar-alt"></i> Orario</div>
+        <div class="wrapper">
+            <nav id="sidebar">
+                <div class="nav-item active" onclick="showSection('admin')"><i class="fa fa-cogs"></i> Configurazione Admin</div>
+                <div class="nav-item" onclick="showSection('classe')"><i class="fa fa-users"></i> Registro di Classe</div>
+                <div class="nav-item" onclick="showSection('prof')"><i class="fa fa-book"></i> Registro Professore</div>
+                <div class="nav-item" onclick="showSection('bacheca')"><i class="fa fa-bullhorn"></i> Bacheca</div>
+                <div class="nav-item" onclick="showSection('scrutini')"><i class="fa fa-gavel"></i> Scrutini</div>
             </nav>
 
-            <main id="main-content">
-                <section id="dashboard">
-                    <h2>Benvenuto, Prof. Rossi</h2>
+            <main>
+                <section id="admin">
+                    <h2>Configurazione Sistema (Admin)</h2>
                     <div class="card">
-                        <h3>Prossime Verifiche</h3>
-                        <p>1A - Matematica: 25/10/2023</p>
+                        <h3>Aggiungi Studente</h3>
+                        <input type="text" id="adm-stud-name" placeholder="Nome e Cognome">
+                        <select id="adm-stud-class">
+                            <option value="1A">Classe 1A</option>
+                            <option value="2B">Classe 2B</option>
+                        </select>
+                        <button class="btn btn-success" onclick="adminAddStudent()">Aggiungi</button>
+                    </div>
+                    <div class="card">
+                        <h3>Studenti Iscritti</h3>
+                        <div id="adm-student-list"></div>
                     </div>
                 </section>
 
-                <section id="reg-classe" class="hidden">
-                    <h2>Registro di Classe</h2>
+                <section id="classe" class="hidden">
+                    <div style="display:flex; justify-content: space-between; align-items: center;">
+                        <h2>Registro di Classe</h2>
+                        <input type="date" id="classe-date-picker" onchange="renderClasse()">
+                    </div>
                     <div class="selector-bar">
-                        <select id="class-select-classe" onchange="loadClassData()">
-                            <option value="1A">Classe 1A - Matematica</option>
-                            <option value="2B">Classe 2B - Fisica</option>
+                        <select id="sel-classe-cl" onchange="renderClasse()">
+                            <option value="1A">1A</option>
+                            <option value="2B">2B</option>
                         </select>
                     </div>
+
                     <div class="card">
-                        <label><b>Firma Ora di Lezione:</b></label><br>
-                        <input type="text" id="lezione-svolta" placeholder="Argomento della lezione..." style="width: 80%; padding: 8px; margin: 10px 0;">
-                        <br>
-                        <label><b>Compiti Assegnati:</b></label><br>
-                        <textarea id="compiti-area" style="width: 80%; height: 60px; margin: 10px 0;"></textarea>
-                        <br>
-                        <button class="btn-save" onclick="saveClasseData()">Salva Firma e Compiti</button>
+                        <h3>Appello e Note (Oggi)</h3>
+                        <table id="table-appello">
+                            <thead><tr><th>Studente</th><th>Stato</th><th>Dettagli</th></tr></thead>
+                            <tbody id="body-appello"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="card">
+                        <h3>Lezione e Compiti</h3>
+                        <textarea id="cl-firma" placeholder="Argomento lezione..." style="width:100%; margin-bottom:10px;"></textarea>
+                        <textarea id="cl-compiti" placeholder="Compiti assegnati..." style="width:100%; margin-bottom:10px;"></textarea>
+                        <button class="btn btn-success" onclick="saveClasseGiornaliero()">Firma e Salva Giornata</button>
                     </div>
                 </section>
 
-                <section id="reg-prof" class="hidden">
+                <section id="prof" class="hidden">
                     <h2>Registro del Professore</h2>
                     <div class="selector-bar">
-                        <select id="class-select-voti" onchange="renderGradeTable()">
-                            <option value="1A">Classe 1A - Matematica</option>
-                            <option value="2B">Classe 2B - Fisica</option>
+                        <select id="sel-classe-prof" onchange="renderProf()">
+                            <option value="1A">1A - Matematica</option>
+                            <option value="2B">2B - Fisica</option>
                         </select>
                     </div>
                     <div class="card">
-                        <table id="grades-table">
-                            <thead>
-                                <tr>
-                                    <th>Studente</th>
-                                    <th>Voto Orale</th>
-                                    <th>Voto Scritto</th>
-                                    <th>Media</th>
-                                    <th>Scrutinio (Voto Prop.)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="grades-body">
-                                </tbody>
+                        <table id="table-voti">
+                            <thead><tr><th>Studente</th><th>Voti Orali</th><th>Voti Scritti</th><th>Media</th></tr></thead>
+                            <tbody id="body-voti"></tbody>
                         </table>
-                        <br>
-                        <button class="btn-save" onclick="saveGrades()">Salva Tutti i Voti</button>
                     </div>
                 </section>
 
                 <section id="bacheca" class="hidden">
-                    <h2>Bacheca Scolastica</h2>
+                    <h2>Bacheca</h2>
                     <div class="card">
-                        <p><b>20/10/2023:</b> Circolare n.45 - Consigli di Classe Novembre.</p>
-                        <hr>
-                        <p><b>18/10/2023:</b> Convocazione Assemblea d'Istituto.</p>
+                        <h3>Scrivi un annuncio</h3>
+                        <textarea id="msg-bacheca" style="width:100%; height:60px;"></textarea><br><br>
+                        <button class="btn btn-primary" onclick="addBacheca()">Pubblica</button>
                     </div>
+                    <div id="lista-bacheca"></div>
                 </section>
 
-                <section id="orario" class="hidden">
-                    <h2>Orario Settimanale</h2>
+                <section id="scrutini" class="hidden">
+                    <h2>Scrutini Finali</h2>
                     <div class="card">
-                        <table>
-                            <tr><th>Ora</th><th>Lun</th><th>Mar</th><th>Mer</th><th>Gio</th><th>Ven</th></tr>
-                            <tr><td>1</td><td>1A</td><td>2B</td><td>-</td><td>1A</td><td>2B</td></tr>
-                            <tr><td>2</td><td>1A</td><td>2B</td><td>1A</td><td>-</td><td>2B</td></tr>
+                        <table id="table-scrutini">
+                            <thead><tr><th>Studente</th><th>Media Anno</th><th>Voto Finale</th><th>Giudizio</th></tr></thead>
+                            <tbody id="body-scrutini"></tbody>
                         </table>
+                        <br>
+                        <button class="btn btn-success" onclick="saveScrutini()">Salva Scrutinio</button>
                     </div>
                 </section>
             </main>
@@ -219,99 +173,191 @@
     </div>
 
     <script>
-        const DB_KEY = 'ARGO_DATA_STORE';
-        let store = JSON.parse(localStorage.getItem(DB_KEY)) || {
-            voti: { "1A": {}, "2B": {} },
-            registri: { "1A": {firma: "", compiti: ""}, "2B": {firma: "", compiti: ""} }
-        };
-
-        const STUDENTI = {
-            "1A": ["Rossi Mario", "Bianchi Luigi", "Verdi Anna", "Neri Paolo", "Gialli Sofia"],
-            "2B": ["Esposito G.", "Romano F.", "Ricci A.", "Marino L.", "Greco M."]
+        const DB_KEY = 'ARGO_MEGA_DB';
+        let db = JSON.parse(localStorage.getItem(DB_KEY)) || {
+            studenti: [
+                {nome: "Rossi Mario", classe: "1A"}, {nome: "Bianchi L.", classe: "1A"},
+                {nome: "Esposito G.", classe: "2B"}, {nome: "Verdi A.", classe: "2B"}
+            ],
+            giornate: {}, // ID: "YYYY-MM-DD_CLASSE"
+            voti: {}, // ID: "NOME_STUDENTE"
+            bacheca: [
+                {testo: "Benvenuti nel nuovo registro.", autore: "Sistema", data: "2023-10-01"}
+            ],
+            scrutini: {}
         };
 
         function checkLogin() {
-            const pass = document.getElementById('password').value;
-            if (pass === "Sacataca.com") {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('app-interface').style.display = 'flex';
-                renderGradeTable();
-            } else {
-                document.getElementById('login-error').style.display = 'block';
+            if(document.getElementById('password').value === "Sacataca.com") {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-interface').classList.remove('hidden');
+                init();
             }
+        }
+
+        function init() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('classe-date-picker').value = today;
+            document.getElementById('current-date-display').innerText = new Date().toLocaleDateString('it-IT');
+            renderAdmin();
         }
 
         function showSection(id) {
             document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            if(id === 'classe') renderClasse();
+            if(id === 'prof') renderProf();
+            if(id === 'bacheca') renderBacheca();
+            if(id === 'scrutini') renderScrutini();
         }
 
-        // GESTIONE REGISTRO PROFESSORE (VOTI)
-        function renderGradeTable() {
-            const classe = document.getElementById('class-select-voti').value;
-            const tbody = document.getElementById('grades-body');
-            tbody.innerHTML = '';
+        /* --- ADMIN --- */
+        function adminAddStudent() {
+            const nome = document.getElementById('adm-stud-name').value;
+            const classe = document.getElementById('adm-stud-class').value;
+            if(!nome) return;
+            db.studenti.push({nome, classe});
+            save();
+            renderAdmin();
+        }
 
-            STUDENTI[classe].forEach((stud, index) => {
-                const data = store.voti[classe][stud] || { orale: '', scritto: '', scrutinio: '' };
-                const media = calculateMedia(data.orale, data.scritto);
-                
+        function renderAdmin() {
+            const div = document.getElementById('adm-student-list');
+            div.innerHTML = db.studenti.map(s => `<div><b>${s.classe}</b> - ${s.nome}</div>`).join('');
+        }
+
+        /* --- REGISTRO DI CLASSE --- */
+        function renderClasse() {
+            const data = document.getElementById('classe-date-picker').value;
+            const classe = document.getElementById('sel-classe-cl').value;
+            const key = `${data}_${classe}`;
+            const info = db.giornate[key] || {firma: "", compiti: "", presenze: {}};
+            
+            document.getElementById('cl-firma').value = info.firma;
+            document.getElementById('cl-compiti').value = info.compiti;
+
+            const tbody = document.getElementById('body-appello');
+            tbody.innerHTML = '';
+            
+            db.studenti.filter(s => s.classe === classe).forEach(s => {
+                const stato = info.presenze[s.nome] || 'P';
                 tbody.innerHTML += `
                     <tr>
-                        <td>${stud}</td>
-                        <td><input type="number" class="grade-input" value="${data.orale}" onchange="updateLiveMedia(this, '${classe}', '${stud}', 'orale')"></td>
-                        <td><input type="number" class="grade-input" value="${data.scritto}" onchange="updateLiveMedia(this, '${classe}', '${stud}', 'scritto')"></td>
-                        <td class="media-cell"><b>${media}</b></td>
-                        <td><input type="number" class="grade-input" value="${data.scrutinio || Math.round(media)}" onchange="updateLiveData('${classe}', '${stud}', 'scrutinio', this.value)"></td>
+                        <td>${s.nome}</td>
+                        <td>
+                            <select onchange="updatePresenza('${key}', '${s.nome}', this.value)">
+                                <option value="P" ${stato==='P'?'selected':''}>Presente</option>
+                                <option value="A" ${stato==='A'?'selected':''}>Assente</option>
+                                <option value="R" ${stato==='R'?'selected':''}>Ritardo</option>
+                                <option value="U" ${stato==='U'?'selected':''}>Uscita</option>
+                            </select>
+                        </td>
+                        <td><input type="text" placeholder="Ora/Note" onchange="updateNotePresenza('${key}', '${s.nome}', this.value)"></td>
                     </tr>
                 `;
             });
         }
 
-        function calculateMedia(o, s) {
-            let grades = [];
-            if(o) grades.push(parseFloat(o));
-            if(s) grades.push(parseFloat(s));
-            if(grades.length === 0) return 0;
-            return (grades.reduce((a,b) => a+b) / grades.length).toFixed(2);
+        function updatePresenza(key, nome, val) {
+            if(!db.giornate[key]) db.giornate[key] = {firma:"", compiti:"", presenze:{}};
+            db.giornate[key].presenze[nome] = val;
+            save();
         }
 
-        function updateLiveMedia(input, classe, studente, tipo) {
-            if(!store.voti[classe][studente]) store.voti[classe][studente] = {orale:'', scritto:'', scrutinio:''};
-            store.voti[classe][studente][tipo] = input.value;
-            renderGradeTable(); // Re-render per aggiornare la media
+        function saveClasseGiornaliero() {
+            const data = document.getElementById('classe-date-picker').value;
+            const classe = document.getElementById('sel-classe-cl').value;
+            const key = `${data}_${classe}`;
+            if(!db.giornate[key]) db.giornate[key] = {firma:"", compiti:"", presenze:{}};
+            db.giornate[key].firma = document.getElementById('cl-firma').value;
+            db.giornate[key].compiti = document.getElementById('cl-compiti').value;
+            save();
+            alert("Giornata salvata!");
         }
 
-        function updateLiveData(classe, studente, tipo, val) {
-            if(!store.voti[classe][studente]) store.voti[classe][studente] = {orale:'', scritto:'', scrutinio:''};
-            store.voti[classe][studente][tipo] = val;
+        /* --- REGISTRO PROFESSORE --- */
+        function renderProf() {
+            const classe = document.getElementById('sel-classe-prof').value;
+            const tbody = document.getElementById('body-voti');
+            tbody.innerHTML = '';
+
+            db.studenti.filter(s => s.classe === (classe === '1A' ? '1A' : '2B')).forEach(s => {
+                const voti = db.voti[s.nome] || {orali: [], scritti: []};
+                const media = [...voti.orali, ...voti.scritti].length > 0 ? 
+                    ([...voti.orali, ...voti.scritti].reduce((a,b)=>a+b)/[...voti.orali, ...voti.scritti].length).toFixed(2) : '-';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${s.nome}</td>
+                        <td>
+                            <div id="orali-${s.nome}">${voti.orali.map((v, i) => `<span class="grade-tag">${v} <span class="delete-grade" onclick="delGrade('${s.nome}', 'orali', ${i})">x</span></span>`).join('')}</div>
+                            <input type="number" placeholder="+" style="width:40px" onkeydown="if(event.key==='Enter') addGrade('${s.nome}', 'orali', this)">
+                        </td>
+                        <td>
+                            <div id="scritti-${s.nome}">${voti.scritti.map((v, i) => `<span class="grade-tag">${v} <span class="delete-grade" onclick="delGrade('${s.nome}', 'scritti', ${i})">x</span></span>`).join('')}</div>
+                            <input type="number" placeholder="+" style="width:40px" onkeydown="if(event.key==='Enter') addGrade('${s.nome}', 'scritti', this)">
+                        </td>
+                        <td><b>${media}</b></td>
+                    </tr>
+                `;
+            });
         }
 
-        function saveGrades() {
-            localStorage.setItem(DB_KEY, JSON.stringify(store));
-            alert("Voti salvati correttamente nel LocalStorage!");
+        function addGrade(nome, tipo, input) {
+            if(!input.value) return;
+            if(!db.voti[nome]) db.voti[nome] = {orali: [], scritti: []};
+            db.voti[nome][tipo].push(parseFloat(input.value));
+            input.value = '';
+            save();
+            renderProf();
         }
 
-        // GESTIONE REGISTRO DI CLASSE
-        function loadClassData() {
-            const classe = document.getElementById('class-select-classe').value;
-            document.getElementById('lezione-svolta').value = store.registri[classe].firma;
-            document.getElementById('compiti-area').value = store.registri[classe].compiti;
+        function delGrade(nome, tipo, index) {
+            db.voti[nome][tipo].splice(index, 1);
+            save();
+            renderProf();
         }
 
-        function saveClasseData() {
-            const classe = document.getElementById('class-select-classe').value;
-            store.registri[classe].firma = document.getElementById('lezione-svolta').value;
-            store.registri[classe].compiti = document.getElementById('compiti-area').value;
-            localStorage.setItem(DB_KEY, JSON.stringify(store));
-            alert("Registro di classe aggiornato!");
+        /* --- BACHECA --- */
+        function renderBacheca() {
+            const div = document.getElementById('lista-bacheca');
+            div.innerHTML = db.bacheca.map(m => `
+                <div class="card">
+                    <small>${m.data} - da ${m.autore}</small>
+                    <p>${m.testo}</p>
+                </div>
+            `).reverse().join('');
         }
 
-        // Caricamento iniziale
-        window.onload = () => { if(store) loadClassData(); };
+        function addBacheca() {
+            const t = document.getElementById('msg-bacheca').value;
+            if(!t) return;
+            db.bacheca.push({testo: t, autore: "Prof. Rossi", data: new Date().toLocaleDateString()});
+            document.getElementById('msg-bacheca').value = '';
+            save();
+            renderBacheca();
+        }
 
+        /* --- SCRUTINI --- */
+        function renderScrutini() {
+            const tbody = document.getElementById('body-scrutini');
+            tbody.innerHTML = db.studenti.map(s => {
+                const voti = db.voti[s.nome] || {orali:[], scritti:[]};
+                const m = [...voti.orali, ...voti.scritti];
+                const media = m.length > 0 ? (m.reduce((a,b)=>a+b)/m.length).toFixed(2) : '0';
+                return `
+                    <tr>
+                        <td>${s.nome} (${s.classe})</td>
+                        <td>${media}</td>
+                        <td><input type="number" style="width:50px" value="${Math.round(media)}"></td>
+                        <td><textarea placeholder="Giudizio..."></textarea></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function save() { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
     </script>
 </body>
 </html>
