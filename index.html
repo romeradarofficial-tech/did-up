@@ -17,49 +17,48 @@
             --bg-gray: #f4f7f9;
         }
 
-        body, html { margin: 0; font-family: 'Inter', 'Segoe UI', sans-serif; background: var(--bg-gray); height: 100vh; overflow: hidden; color: #333; }
-        
-        /* Layout */
+        body, html { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-gray); height: 100vh; overflow: hidden; color: #333; }
         .app-container { display: flex; flex-direction: column; height: 100vh; }
-        header { background: var(--argo-blue-dark); color: white; padding: 0 20px; height: 55px; display: flex; align-items: center; justify-content: space-between; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        
+        header { 
+            background: var(--argo-blue-dark); color: white; padding: 0 20px; height: 55px; 
+            display: flex; align-items: center; justify-content: space-between; z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2); 
+        }
+
         .main-layout { display: flex; flex: 1; overflow: hidden; }
         
-        /* Sidebar */
+        /* Sidebar Migliorata */
         nav { width: var(--sidebar-w); background: #fff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column; overflow-y: auto; }
         .nav-group { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
-        .nav-label { font-size: 0.7rem; font-weight: 800; color: #9e9e9e; padding: 10px 20px; text-transform: uppercase; }
-        .nav-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #455a64; font-size: 0.9rem; transition: 0.2s; }
+        .nav-label { font-size: 0.7rem; font-weight: 800; color: #9e9e9e; padding: 10px 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #455a64; font-size: 0.85rem; transition: 0.2s; }
         .nav-item:hover { background: var(--argo-blue-light); color: var(--argo-blue-main); }
         .nav-item.active { background: var(--argo-blue-light); color: var(--argo-blue-main); border-left: 4px solid var(--argo-blue-main); font-weight: 600; }
 
-        /* Main Content */
+        /* Contenuti */
         main { flex: 1; padding: 25px; overflow-y: auto; background: var(--bg-gray); }
-        .card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; margin-bottom: 20px; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .card { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; margin-bottom: 20px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--argo-blue-light); padding-bottom: 10px; }
 
-        /* UI Components */
-        .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; }
-        .btn-primary { background: var(--argo-blue-main); color: white; }
-        .btn-outline { border: 1px solid #ccc; background: transparent; }
-        .btn-danger { background: var(--danger); color: white; }
+        /* Tabelle e Input */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background: #f8f9fa; padding: 12px; text-align: left; border-bottom: 2px solid #eee; font-size: 0.75rem; color: #666; text-transform: uppercase; }
+        td { padding: 12px; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem; }
+        .grade-input { width: 50px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-weight: bold; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; }
-        th { background: #f8f9fa; padding: 12px; text-align: left; border-bottom: 2px solid #eee; font-size: 0.8rem; color: #666; }
-        td { padding: 12px; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
+        .insufficient { color: var(--danger); font-weight: 800; }
+        .sufficient { color: var(--success); font-weight: 800; }
 
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
-        .badge-role { background: #eee; color: #666; }
-        .badge-preside { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; }
+        .btn-primary { background: var(--argo-blue-main); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
 
-        /* Forms */
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-size: 0.85rem; font-weight: 600; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-
-        /* Login */
-        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #0d47a1 0%, #1a237e 100%); }
-        .login-box { background: white; padding: 40px; border-radius: 15px; width: 350px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-
+        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0d47a1 0%, #1a237e 100%); }
+        .login-box { background: white; padding: 40px; border-radius: 12px; width: 320px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); text-align: center; }
+        
         .hidden { display: none !important; }
     </style>
 </head>
@@ -67,317 +66,263 @@
 
 <div id="login-screen">
     <div class="login-box">
-        <img src="https://portaleargo.it/v2/assets/img/logo_argo.png" width="150" style="margin-bottom: 20px;">
-        <h3 style="margin-bottom: 20px; color: var(--argo-blue-dark)">DIDUP v5.0</h3>
-        <div class="form-group" style="text-align: left;">
-            <label>User Code (admin / prof)</label>
-            <input type="text" id="login-user" placeholder="MARIO.ROSSI">
+        <img src="https://portaleargo.it/v2/assets/img/logo_argo.png" width="140" style="margin-bottom: 25px;">
+        <div style="margin-bottom: 20px;">
+            <input type="text" id="login-user" placeholder="Username (admin/prof)" style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; border-radius:5px;">
+            <input type="password" id="login-pass" value="password" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:5px;">
         </div>
-        <div class="form-group" style="text-align: left;">
-            <label>Password</label>
-            <input type="password" id="login-pass" value="password123">
-        </div>
-        <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px;" onclick="handleLogin()">ACCEDI</button>
-        <p id="login-err" class="hidden" style="color: var(--danger); font-size: 0.8rem; mt: 10px;">Credenziali errate!</p>
+        <button class="btn btn-primary" style="width:100%; justify-content:center; padding:12px;" onclick="handleLogin()">ACCEDI AL SISTEMA</button>
     </div>
 </div>
 
 <div id="app-interface" class="app-container hidden">
     <header>
         <div style="display: flex; align-items: center; gap: 15px;">
-            <i class="fa fa-bars" style="cursor:pointer"></i>
-            <span style="font-weight: 800; letter-spacing: 1px;">DIDUP ENTERPRISE</span>
-            <span id="header-school" style="font-size: 0.75rem; border-left: 1px solid #ffffff44; padding-left: 15px; margin-left: 5px;">LICEO SCIENTIFICO GALILEI</span>
+            <i class="fa fa-university"></i>
+            <span style="font-weight: 800; letter-spacing: 1px;">DIDUP ENTERPRISE v5.0</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <div style="text-align: right; line-height: 1.2;">
-                <div id="user-display-name" style="font-weight: 700; font-size: 0.85rem;">Prof. Mario Rossi</div>
-                <div id="user-role-display" class="badge badge-role">Docente</div>
-            </div>
-            <button class="btn btn-danger" onclick="logout()"><i class="fa fa-power-off"></i></button>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span id="user-info" style="font-size: 0.8rem; text-align: right;"></span>
+            <button class="btn btn-danger" onclick="location.reload()"><i class="fa fa-sign-out"></i></button>
         </div>
     </header>
 
     <div class="main-layout">
-        <nav id="sidebar-nav">
-            </nav>
-
-        <main id="main-content">
-            </main>
+        <nav id="sidebar-nav"></nav>
+        <main id="main-content"></main>
     </div>
 </div>
 
 <script>
-// --- DATABASE INIZIALE (Simulazione Backend) ---
-const INITIAL_DB = {
+// --- DATABASE ENTERPRISE ---
+const DATA = {
     users: [
-        { id: 1, code: 'admin', pass: 'admin', name: 'Mario Rossi', role: 'PRESIDE', subjects: [] },
-        { id: 2, code: 'prof', pass: 'prof', name: 'Laura Bianchi', role: 'DOCENTE', subjects: [1, 2] }
+        { id: 1, code: 'admin', pass: 'admin', name: 'Dott. Giuseppe Verdi', role: 'PRESIDE' },
+        { id: 2, code: 'prof', pass: 'prof', name: 'Prof.ssa Maria Montessori', role: 'DOCENTE' }
     ],
-    classes: [
-        { id: 1, name: '1A' }, { id: 2, name: '2B' }
-    ],
+    classes: [{ id: 1, name: '5A INF' }, { id: 2, name: '5B INF' }],
     subjects: [
-        { id: 1, name: 'Matematica', classId: 1, teacherId: 2 },
-        { id: 2, name: 'Fisica', classId: 1, teacherId: 2 },
-        { id: 3, name: 'Italiano', classId: 2, teacherId: 1 }
+        { id: 1, name: 'Informatica', classId: 1, teacherId: 2 },
+        { id: 2, name: 'Sistemi e Reti', classId: 1, teacherId: 2 },
+        { id: 3, name: 'Italiano', classId: 1, teacherId: 1 }
     ],
     students: [
-        { id: 1, name: 'Alberti Fabio', classId: 1 },
-        { id: 2, name: 'Bruni Sara', classId: 1 },
-        { id: 3, name: 'Casadei Luca', classId: 2 }
+        { id: 1, name: 'Bernardi Alessandro', classId: 1 },
+        { id: 2, name: 'Galli Roberta', classId: 1 },
+        { id: 3, name: 'Zani Federico', classId: 1 }
     ],
-    grades: [],
-    attendance: []
+    grades: [
+        { studentId: 1, subjectId: 1, val: 8, date: '2023-10-10', type: 'Orale' },
+        { studentId: 1, subjectId: 1, val: 5.5, date: '2023-11-15', type: 'Scritto' }
+    ],
+    scrutini: [] // Memoria voti proposti
 };
 
-let db = JSON.parse(localStorage.getItem('ARGO_V5_DB')) || INITIAL_DB;
+let db = JSON.parse(localStorage.getItem('ARGO_ULTRA_DB')) || DATA;
 let currentUser = null;
 
-function saveDB() { localStorage.setItem('ARGO_V5_DB', JSON.stringify(db)); }
+function save() { localStorage.setItem('ARGO_ULTRA_DB', JSON.stringify(db)); }
 
-// --- AUTH SYSTEM ---
 function handleLogin() {
-    const user = document.getElementById('login-user').value;
-    const pass = document.getElementById('login-pass').value;
+    const u = document.getElementById('login-user').value;
+    const p = document.getElementById('login-pass').value;
+    currentUser = db.users.find(x => x.code === u && x.pass === p);
     
-    const found = db.users.find(u => u.code === user && u.pass === pass);
-    if(found) {
-        currentUser = found;
+    if(currentUser) {
         document.getElementById('login-screen').classList.add('hidden');
         document.getElementById('app-interface').classList.remove('hidden');
-        renderUI();
-    } else {
-        document.getElementById('login-err').classList.remove('hidden');
+        document.getElementById('user-info').innerHTML = `<b>${currentUser.name}</b><br>${currentUser.role}`;
+        renderSidebar();
+        showDashboard();
     }
-}
-
-function logout() { location.reload(); }
-
-// --- UI ROUTING ---
-function renderUI() {
-    document.getElementById('user-display-name').innerText = currentUser.name;
-    const roleBadge = document.getElementById('user-role-display');
-    roleBadge.innerText = currentUser.role;
-    roleBadge.className = `badge ${currentUser.role === 'PRESIDE' ? 'badge-preside' : 'badge-role'}`;
-
-    renderSidebar();
-    showDashboard();
 }
 
 function renderSidebar() {
     const nav = document.getElementById('sidebar-nav');
     let html = `
         <div class="nav-group">
-            <div class="nav-label">Servizi di Classe</div>
-            <div class="nav-item" onclick="showDashboard()"><i class="fa fa-home"></i> Dashboard</div>
-            <div class="nav-item" onclick="showRegister()"><i class="fa fa-pen-to-square"></i> Registro di Classe</div>
+            <div class="nav-label">Registro Personale</div>
+            <div class="nav-item" onclick="showDashboard()"><i class="fa fa-th-large"></i> Dashboard</div>
+            <div class="nav-item" onclick="showRegister()"><i class="fa fa-edit"></i> Firma e Appello</div>
+            <div class="nav-item" onclick="showGrades()"><i class="fa fa-graduation-cap"></i> Registro Voti</div>
+        </div>
+        <div class="nav-group">
+            <div class="nav-label">Scrutini e Verifiche</div>
+            <div class="nav-item" onclick="showScrutini()"><i class="fa fa-trophy"></i> Scrutinio Elettronico</div>
+            <div class="nav-item" onclick="alert('Area Programmazione in Manutenzione')"><i class="fa fa-calendar-check"></i> Programmazione</div>
         </div>
     `;
-
     if(currentUser.role === 'PRESIDE') {
         html += `
             <div class="nav-group">
-                <div class="nav-label">Amministrazione Preside</div>
-                <div class="nav-item" onclick="showUserMgmt()"><i class="fa fa-user-shield"></i> Gestione Personale</div>
-                <div class="nav-item" onclick="showClassMgmt()"><i class="fa fa-school"></i> Classi e Materie</div>
+                <div class="nav-label">Amministrazione</div>
+                <div class="nav-item" onclick="showAdminUsers()"><i class="fa fa-users-cog"></i> Gestione Docenti</div>
             </div>
         `;
     }
-
     nav.innerHTML = html;
 }
 
-// --- VIEWS ---
-
-// 1. Dashboard
+// 1. DASHBOARD
 function showDashboard() {
-    const content = document.getElementById('main-content');
-    content.innerHTML = `
-        <div class="section-header"><h2>Benvenuto, ${currentUser.name}</h2></div>
-        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;">
-            <div class="card"><h3>${db.students.length}</h3><p>Studenti Iscritti</p></div>
-            <div class="card"><h3>${db.classes.length}</h3><p>Classi Attive</p></div>
-            <div class="card"><h3>${db.subjects.length}</h3><p>Materie Configurate</p></div>
+    const main = document.getElementById('main-content');
+    main.innerHTML = `
+        <div class="section-header"><h2>Pannello di Controllo Enterprise</h2></div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px;">
+            <div class="card" style="border-left: 5px solid var(--argo-blue-main)">
+                <small>STUDENTI TOTALI</small><h3>${db.students.length}</h3>
+            </div>
+            <div class="card" style="border-left: 5px solid var(--argo-accent)">
+                <small>MEDIA ISTITUTO</small><h3>7.2</h3>
+            </div>
+            <div class="card" style="border-left: 5px solid var(--success)">
+                <small>LEZIONI FIRMATE</small><h3>124</h3>
+            </div>
+        </div>
+        <div class="card" style="margin-top:20px;">
+            <h3><i class="fa fa-bullhorn"></i> Bacheca Circolari</h3>
+            <p><span class="badge badge-preside">NEW</span> Circolare n.142: Convocazione Consigli di Classe.</p>
+            <p><span class="badge badge-role">INFO</span> Nuove modalità inserimento obiettivi didattici.</p>
         </div>
     `;
 }
 
-// 2. Gestione Utenti (PRESIDE)
-function showUserMgmt() {
-    const content = document.getElementById('main-content');
-    content.innerHTML = `
+// 2. REGISTRO VOTI (Dettaglio)
+function showGrades() {
+    const main = document.getElementById('main-content');
+    main.innerHTML = `
+        <div class="section-header"><h2>Registro del Professore</h2></div>
+        <div class="card">
+            <select id="sel-sub" onchange="renderGradesTable()" style="padding:10px; width:300px;">
+                <option value="">Seleziona Materia...</option>
+                ${db.subjects.filter(s => currentUser.role==='PRESIDE' || s.teacherId == currentUser.id).map(s => `<option value="${s.id}">${s.name} (${db.classes.find(c=>c.id==s.classId).name})</option>`).join('')}
+            </select>
+            <div id="grades-table-container" style="margin-top:20px;"></div>
+        </div>
+    `;
+}
+
+function renderGradesTable() {
+    const sid = document.getElementById('sel-sub').value;
+    if(!sid) return;
+    const students = db.students.filter(s => s.classId == db.subjects.find(sub => sub.id == sid).classId);
+    
+    let html = `<table><thead><tr><th>Studente</th><th>Voti Periodo</th><th>Azioni</th></tr></thead><tbody>`;
+    students.forEach(st => {
+        const v = db.grades.filter(g => g.studentId == st.id && g.subjectId == sid);
+        html += `
+            <tr>
+                <td width="250"><b>${st.name}</b></td>
+                <td>${v.map(grade => `<span class="badge ${grade.val < 6 ? 'btn-danger' : 'badge-preside'}" title="${grade.date}">${grade.val}</span>`).join(' ')}</td>
+                <td>
+                    <input type="number" step="0.5" class="grade-input" id="new-v-${st.id}" placeholder="+">
+                    <button class="btn btn-primary" onclick="addGrade(${st.id}, ${sid})">Aggiungi</button>
+                </td>
+            </tr>`;
+    });
+    html += `</tbody></table>`;
+    document.getElementById('grades-table-container').innerHTML = html;
+}
+
+function addGrade(sid, subid) {
+    const val = parseFloat(document.getElementById(`new-v-${sid}`).value);
+    if(val >= 1 && val <= 10) {
+        db.grades.push({ studentId: sid, subjectId: subid, val: val, date: new Date().toLocaleDateString(), type: 'N/D' });
+        save(); renderGradesTable();
+    }
+}
+
+// 3. SCRUTINIO ELETTRONICO (Il cuore del sistema)
+function showScrutini() {
+    const main = document.getElementById('main-content');
+    main.innerHTML = `
         <div class="section-header">
-            <h2>Gestione Personale Docente</h2>
-            <button class="btn btn-primary" onclick="addUserPrompt()"><i class="fa fa-plus"></i> Nuovo Utente</button>
+            <h2><i class="fa fa-trophy"></i> Proposte di Voto per Scrutinio</h2>
+            <div>
+                <button class="btn btn-success" onclick="alert('Dati inviati alla segreteria!')">INVIA TUTTO</button>
+            </div>
         </div>
         <div class="card">
-            <table>
-                <thead><tr><th>Nome</th><th>Codice</th><th>Ruolo</th><th>Azioni</th></tr></thead>
+            <p>In questa sezione il docente propone il voto unico per il quadrimestre basandosi sulla media pesata.</p>
+            <table id="scrutinio-table">
+                <thead>
+                    <tr><th>Studente</th><th>Materia</th><th>Media Voti</th><th>Voto Proposto</th><th>Assenze</th><th>Giudizio Breve</th></tr>
+                </thead>
                 <tbody>
-                    ${db.users.map(u => `
-                        <tr>
-                            <td>${u.name}</td>
-                            <td><code>${u.code}</code></td>
-                            <td><span class="badge ${u.role==='PRESIDE'?'badge-preside':'badge-role'}">${u.role}</span></td>
-                            <td><button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">Rimuovi</button></td>
-                        </tr>
-                    `).join('')}
+                    ${db.subjects.filter(s => currentUser.role==='PRESIDE' || s.teacherId == currentUser.id).map(s => {
+                        const students = db.students.filter(st => st.classId == s.classId);
+                        return students.map(st => {
+                            const v = db.grades.filter(g => g.studentId == st.id && g.subjectId == s.id);
+                            const media = v.length ? (v.reduce((a,b)=>a+b.val, 0)/v.length).toFixed(2) : 'N/D';
+                            const proposto = Math.round(media === 'N/D' ? 0 : media);
+                            return `
+                                <tr>
+                                    <td>${st.name}</td>
+                                    <td><small>${s.name}</small></td>
+                                    <td class="${media < 6 ? 'insufficient' : 'sufficient'}">${media}</td>
+                                    <td><input type="number" class="grade-input" value="${proposto}"></td>
+                                    <td>0h</td>
+                                    <td><select style="font-size:0.7rem"><option>Partecipazione costante</option><option>Impegno discontinuo</option></select></td>
+                                </tr>
+                            `;
+                        }).join('');
+                    }).join('')}
                 </tbody>
             </table>
         </div>
     `;
 }
 
-function addUserPrompt() {
-    const name = prompt("Nome completo Docente:");
-    const code = prompt("Username (es: ROSSI.M):");
-    if(name && code) {
-        db.users.push({
-            id: Date.now(),
-            code: code,
-            pass: 'password123',
-            name: name,
-            role: 'DOCENTE',
-            subjects: []
-        });
-        saveDB();
-        showUserMgmt();
-    }
-}
-
-// 3. Gestione Classi e Materie (PRESIDE)
-function showClassMgmt() {
-    const content = document.getElementById('main-content');
-    content.innerHTML = `
-        <div class="section-header">
-            <h2>Configurazione Scuola</h2>
-        </div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-            <div class="card">
-                <h3>Classi</h3>
-                <div class="form-group"><input id="new-class-name" placeholder="Esempio: 3C"><button onclick="addClass()">Aggiungi</button></div>
-                <ul>${db.classes.map(c => `<li>${c.name}</li>`).join('')}</ul>
-            </div>
-            <div class="card">
-                <h3>Assegnazione Materie</h3>
-                <div class="form-group">
-                    <input id="sub-name" placeholder="Materia">
-                    <select id="sub-class">${db.classes.map(c=>`<option value="${c.id}">${c.name}</option>`)}</select>
-                    <select id="sub-prof">${db.users.map(u=>`<option value="${u.id}">${u.name}</option>`)}</select>
-                    <button onclick="addSubject()">Associa</button>
-                </div>
-                <table>
-                    <thead><tr><th>Materia</th><th>Classe</th><th>Docente</th></tr></thead>
-                    <tbody>
-                        ${db.subjects.map(s => {
-                            const cls = db.classes.find(c => c.id == s.classId);
-                            const prof = db.users.find(u => u.id == s.teacherId);
-                            return `<tr><td>${s.name}</td><td>${cls?cls.name:'?'}</td><td>${prof?prof.name:'?'}</td></tr>`;
-                        }).join('')}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    `;
-}
-
-function addClass() {
-    const val = document.getElementById('new-class-name').value;
-    if(val) {
-        db.classes.push({ id: Date.now(), name: val.toUpperCase() });
-        saveDB();
-        showClassMgmt();
-    }
-}
-
-function addSubject() {
-    const name = document.getElementById('sub-name').value;
-    const cid = document.getElementById('sub-class').value;
-    const tid = document.getElementById('sub-prof').value;
-    
-    if(name) {
-        db.subjects.push({ id: Date.now(), name, classId: parseInt(cid), teacherId: parseInt(tid) });
-        saveDB();
-        showClassMgmt();
-    }
-}
-
-// 4. Registro di Classe (DOCENTE)
+// 4. REGISTRO DI CLASSE (Appello)
 function showRegister() {
-    const content = document.getElementById('main-content');
-    content.innerHTML = `
-        <div class="section-header">
-            <h2>Registro Elettronico - Appello e Voti</h2>
-            <select id="reg-subject-sel" onchange="renderStudentList()">
-                <option value="">Seleziona Materia/Classe...</option>
-                ${db.subjects.filter(s => currentUser.role === 'PRESIDE' || s.teacherId == currentUser.id).map(s => {
-                    const cls = db.classes.find(c => c.id == s.classId);
-                    return `<option value="${s.id}">${s.name} (${cls.name})</option>`;
-                }).join('')}
-            </select>
-        </div>
-        <div id="student-list-container" class="card">
-            <p style="color:#888">Seleziona una materia per caricare gli studenti...</p>
-        </div>
-    `;
-}
-
-function renderStudentList() {
-    const sid = document.getElementById('reg-subject-sel').value;
-    if(!sid) return;
-    
-    const subject = db.subjects.find(s => s.id == sid);
-    const students = db.students.filter(st => st.classId == subject.classId);
-    
-    const container = document.getElementById('student-list-container');
-    container.innerHTML = `
-        <table id="table-appello">
-            <thead>
-                <tr><th>Studente</th><th>Presenza</th><th>Voto Rapido</th><th>Media Attuale</th></tr>
-            </thead>
-            <tbody>
-                ${students.map(s => {
-                    const v = db.grades.filter(g => g.studentId == s.id && g.subjectId == sid);
-                    const media = v.length ? (v.reduce((a,b)=>a+b.val, 0)/v.length).toFixed(1) : '-';
-                    return `
+    const main = document.getElementById('main-content');
+    main.innerHTML = `
+        <div class="section-header"><h2>Appello e Firma del Giorno</h2></div>
+        <div class="card">
+            <div style="background: #fff8e1; padding: 15px; border-radius: 5px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
+                <b>Lezione del: ${new Date().toLocaleDateString()}</b><br>
+                Materia: <select id="firma-sub">${db.subjects.map(s=>`<option>${s.name}</option>`)}</select>
+            </div>
+            <table>
+                <thead><tr><th>Studente</th><th>Stato Presenza</th><th>Note</th></tr></thead>
+                <tbody>
+                    ${db.students.map(s => `
                         <tr>
-                            <td><b>${s.name}</b></td>
+                            <td>${s.name}</td>
                             <td>
-                                <select class="status-sel">
-                                    <option value="P">Presente</option>
-                                    <option value="A">Assente</option>
-                                    <option value="R">Ritardo</option>
-                                </select>
+                                <button class="btn btn-outline" style="border:1px solid #ccc">P</button>
+                                <button class="btn btn-outline" style="color:red">A</button>
+                                <button class="btn btn-outline" style="color:blue">R</button>
                             </td>
-                            <td>
-                                <input type="number" step="0.5" style="width:60px" onkeydown="if(event.key==='Enter') fastGrade(${s.id}, ${sid}, this)">
-                            </td>
-                            <td><span class="badge ${media < 6 ? 'btn-danger' : 'badge-preside'}">${media}</span></td>
+                            <td><input type="text" placeholder="Note disciplinari..." style="width:100%; border:none; border-bottom:1px solid #eee;"></td>
                         </tr>
-                    `;
-                }).join('')}
-            </tbody>
-        </table>
-        <div style="margin-top:20px;">
-            <button class="btn btn-primary" onclick="alert('Firma Elettronica Acquisita!')">FIRMA LEZIONE</button>
+                    `).join('')}
+                </tbody>
+            </table>
+            <button class="btn btn-primary" style="margin-top:20px; width:100%; justify-content:center;" onclick="alert('Registro Firmato!')">FIRMA ORA</button>
         </div>
     `;
 }
 
-function fastGrade(studentId, subjectId, el) {
-    const val = parseFloat(el.value);
-    if(val >= 1 && val <= 10) {
-        db.grades.push({ studentId, subjectId, val, date: new Date().toISOString() });
-        saveDB();
-        renderStudentList();
-        el.value = "";
-    }
+// 5. GESTIONE UTENTI (Admin)
+function showAdminUsers() {
+    const main = document.getElementById('main-content');
+    main.innerHTML = `
+        <div class="section-header"><h2>Gestione Personale Docente</h2></div>
+        <div class="card">
+            <table>
+                <thead><tr><th>ID</th><th>Nome</th><th>Username</th><th>Ruolo</th></tr></thead>
+                <tbody>
+                    ${db.users.map(u => `<tr><td>${u.id}</td><td>${u.name}</td><td><code>${u.code}</code></td><td>${u.role}</td></tr>`).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
 }
 
-// Init
+// Avvio
 window.onload = () => {
-    // Caricamento iniziale
+    // Il database è persistente via LocalStorage
 };
 </script>
 </body>
