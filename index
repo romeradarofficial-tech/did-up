@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DidUP - Prototipo Registro Elettronico</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --argo-blue-dark: #004a80;
+            --argo-blue-light: #0073bc;
+            --argo-bg: #f4f7f9;
+            --sidebar-width: 240px;
+        }
+
+        body, html {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--argo-bg);
+            height: 100%;
+        }
+
+        /* --- LOGIN PAGE --- */
+        #login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--argo-blue-dark), var(--argo-blue-light));
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 350px;
+        }
+
+        .login-box h2 { color: var(--argo-blue-dark); margin-bottom: 20px; }
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background-color: #f39c12;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* --- APP LAYOUT --- */
+        #app-interface { display: none; height: 100vh; flex-direction: column; }
+
+        header {
+            background: var(--argo-blue-dark);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .main-container { display: flex; flex: 1; overflow: hidden; }
+
+        /* SIDEBAR */
+        nav {
+            width: var(--sidebar-width);
+            background: white;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            color: #555;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .nav-item i { margin-right: 10px; width: 20px; color: var(--argo-blue-light); }
+        .nav-item:hover, .nav-item.active { background: #eef7ff; color: var(--argo-blue-light); border-left: 4px solid var(--argo-blue-light); }
+
+        /* CONTENT AREA */
+        main { flex: 1; padding: 25px; overflow-y: auto; }
+
+        .card { background: white; padding: 20px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        
+        table { width: 100%; border-collapse: collapse; background: white; margin-top: 10px; }
+        table th { background: #f8f9fa; color: var(--argo-blue-dark); text-align: left; padding: 12px; border: 1px solid #dee2e6; }
+        table td { padding: 10px; border: 1px solid #dee2e6; }
+
+        .btn-save { background: #27ae60; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+        .grade-input { width: 50px; padding: 5px; text-align: center; }
+        
+        .hidden { display: none; }
+        .selector-bar { margin-bottom: 20px; display: flex; gap: 15px; }
+        select { padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <img src="https://portaleargo.it/v2/assets/img/logo_argo.png" alt="Argo" style="width: 120px; margin-bottom: 20px;">
+            <h2>DidUP</h2>
+            <input type="password" id="password" placeholder="Password (Sacataca.com)">
+            <button onclick="checkLogin()">ACCEDI</button>
+            <p id="login-error" style="color: red; display: none; margin-top: 10px;">Password errata!</p>
+        </div>
+    </div>
+
+    <div id="app-interface">
+        <header>
+            <div style="font-weight: bold; font-size: 1.2rem;">Argo DidUP - Prototipo Docente</div>
+            <div id="user-info">Prof. Mario Rossi | <a href="#" onclick="location.reload()" style="color: #f39c12; text-decoration: none;">Esci</a></div>
+        </header>
+
+        <div class="main-container">
+            <nav>
+                <div class="nav-item active" onclick="showSection('dashboard')"><i class="fa fa-home"></i> Dashboard</div>
+                <div class="nav-item" onclick="showSection('reg-classe')"><i class="fa fa-users"></i> Registro di Classe</div>
+                <div class="nav-item" onclick="showSection('reg-prof')"><i class="fa fa-graduation-cap"></i> Registro Professore</div>
+                <div class="nav-item" onclick="showSection('bacheca')"><i class="fa fa-clipboard-list"></i> Bacheca</div>
+                <div class="nav-item" onclick="showSection('orario')"><i class="fa fa-calendar-alt"></i> Orario</div>
+            </nav>
+
+            <main id="main-content">
+                <section id="dashboard">
+                    <h2>Benvenuto, Prof. Rossi</h2>
+                    <div class="card">
+                        <h3>Prossime Verifiche</h3>
+                        <p>1A - Matematica: 25/10/2023</p>
+                    </div>
+                </section>
+
+                <section id="reg-classe" class="hidden">
+                    <h2>Registro di Classe</h2>
+                    <div class="selector-bar">
+                        <select id="class-select-classe" onchange="loadClassData()">
+                            <option value="1A">Classe 1A - Matematica</option>
+                            <option value="2B">Classe 2B - Fisica</option>
+                        </select>
+                    </div>
+                    <div class="card">
+                        <label><b>Firma Ora di Lezione:</b></label><br>
+                        <input type="text" id="lezione-svolta" placeholder="Argomento della lezione..." style="width: 80%; padding: 8px; margin: 10px 0;">
+                        <br>
+                        <label><b>Compiti Assegnati:</b></label><br>
+                        <textarea id="compiti-area" style="width: 80%; height: 60px; margin: 10px 0;"></textarea>
+                        <br>
+                        <button class="btn-save" onclick="saveClasseData()">Salva Firma e Compiti</button>
+                    </div>
+                </section>
+
+                <section id="reg-prof" class="hidden">
+                    <h2>Registro del Professore</h2>
+                    <div class="selector-bar">
+                        <select id="class-select-voti" onchange="renderGradeTable()">
+                            <option value="1A">Classe 1A - Matematica</option>
+                            <option value="2B">Classe 2B - Fisica</option>
+                        </select>
+                    </div>
+                    <div class="card">
+                        <table id="grades-table">
+                            <thead>
+                                <tr>
+                                    <th>Studente</th>
+                                    <th>Voto Orale</th>
+                                    <th>Voto Scritto</th>
+                                    <th>Media</th>
+                                    <th>Scrutinio (Voto Prop.)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="grades-body">
+                                </tbody>
+                        </table>
+                        <br>
+                        <button class="btn-save" onclick="saveGrades()">Salva Tutti i Voti</button>
+                    </div>
+                </section>
+
+                <section id="bacheca" class="hidden">
+                    <h2>Bacheca Scolastica</h2>
+                    <div class="card">
+                        <p><b>20/10/2023:</b> Circolare n.45 - Consigli di Classe Novembre.</p>
+                        <hr>
+                        <p><b>18/10/2023:</b> Convocazione Assemblea d'Istituto.</p>
+                    </div>
+                </section>
+
+                <section id="orario" class="hidden">
+                    <h2>Orario Settimanale</h2>
+                    <div class="card">
+                        <table>
+                            <tr><th>Ora</th><th>Lun</th><th>Mar</th><th>Mer</th><th>Gio</th><th>Ven</th></tr>
+                            <tr><td>1</td><td>1A</td><td>2B</td><td>-</td><td>1A</td><td>2B</td></tr>
+                            <tr><td>2</td><td>1A</td><td>2B</td><td>1A</td><td>-</td><td>2B</td></tr>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const DB_KEY = 'ARGO_DATA_STORE';
+        let store = JSON.parse(localStorage.getItem(DB_KEY)) || {
+            voti: { "1A": {}, "2B": {} },
+            registri: { "1A": {firma: "", compiti: ""}, "2B": {firma: "", compiti: ""} }
+        };
+
+        const STUDENTI = {
+            "1A": ["Rossi Mario", "Bianchi Luigi", "Verdi Anna", "Neri Paolo", "Gialli Sofia"],
+            "2B": ["Esposito G.", "Romano F.", "Ricci A.", "Marino L.", "Greco M."]
+        };
+
+        function checkLogin() {
+            const pass = document.getElementById('password').value;
+            if (pass === "Sacataca.com") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-interface').style.display = 'flex';
+                renderGradeTable();
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
+
+        function showSection(id) {
+            document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        // GESTIONE REGISTRO PROFESSORE (VOTI)
+        function renderGradeTable() {
+            const classe = document.getElementById('class-select-voti').value;
+            const tbody = document.getElementById('grades-body');
+            tbody.innerHTML = '';
+
+            STUDENTI[classe].forEach((stud, index) => {
+                const data = store.voti[classe][stud] || { orale: '', scritto: '', scrutinio: '' };
+                const media = calculateMedia(data.orale, data.scritto);
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${stud}</td>
+                        <td><input type="number" class="grade-input" value="${data.orale}" onchange="updateLiveMedia(this, '${classe}', '${stud}', 'orale')"></td>
+                        <td><input type="number" class="grade-input" value="${data.scritto}" onchange="updateLiveMedia(this, '${classe}', '${stud}', 'scritto')"></td>
+                        <td class="media-cell"><b>${media}</b></td>
+                        <td><input type="number" class="grade-input" value="${data.scrutinio || Math.round(media)}" onchange="updateLiveData('${classe}', '${stud}', 'scrutinio', this.value)"></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function calculateMedia(o, s) {
+            let grades = [];
+            if(o) grades.push(parseFloat(o));
+            if(s) grades.push(parseFloat(s));
+            if(grades.length === 0) return 0;
+            return (grades.reduce((a,b) => a+b) / grades.length).toFixed(2);
+        }
+
+        function updateLiveMedia(input, classe, studente, tipo) {
+            if(!store.voti[classe][studente]) store.voti[classe][studente] = {orale:'', scritto:'', scrutinio:''};
+            store.voti[classe][studente][tipo] = input.value;
+            renderGradeTable(); // Re-render per aggiornare la media
+        }
+
+        function updateLiveData(classe, studente, tipo, val) {
+            if(!store.voti[classe][studente]) store.voti[classe][studente] = {orale:'', scritto:'', scrutinio:''};
+            store.voti[classe][studente][tipo] = val;
+        }
+
+        function saveGrades() {
+            localStorage.setItem(DB_KEY, JSON.stringify(store));
+            alert("Voti salvati correttamente nel LocalStorage!");
+        }
+
+        // GESTIONE REGISTRO DI CLASSE
+        function loadClassData() {
+            const classe = document.getElementById('class-select-classe').value;
+            document.getElementById('lezione-svolta').value = store.registri[classe].firma;
+            document.getElementById('compiti-area').value = store.registri[classe].compiti;
+        }
+
+        function saveClasseData() {
+            const classe = document.getElementById('class-select-classe').value;
+            store.registri[classe].firma = document.getElementById('lezione-svolta').value;
+            store.registri[classe].compiti = document.getElementById('compiti-area').value;
+            localStorage.setItem(DB_KEY, JSON.stringify(store));
+            alert("Registro di classe aggiornato!");
+        }
+
+        // Caricamento iniziale
+        window.onload = () => { if(store) loadClassData(); };
+
+    </script>
+</body>
+</html>
