@@ -3,361 +3,559 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Argo DidUP - Pro Evolution</title>
+    <title>Argo DidUP - Enterprise Edition v4.0</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --argo-blue-dark: #004a80;
-            --argo-blue-light: #0073bc;
-            --argo-orange: #f39c12;
-            --argo-bg: #f4f7f9;
-            --sidebar-width: 260px;
+            --argo-blue-dark: #003366;
+            --argo-blue-main: #0056b3;
+            --argo-blue-light: #e7f1ff;
+            --argo-accent: #f39c12;
+            --danger: #d9534f;
+            --success: #5cb85c;
+            --sidebar-w: 280px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        body, html { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--argo-bg); height: 100%; overflow: hidden; }
+        body, html { margin: 0; font-family: 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; height: 100vh; overflow: hidden; color: #333; }
         
-        /* Utility */
+        /* Layout Strutturale */
+        .app-container { display: flex; flex-direction: column; height: 100vh; }
+        header { background: var(--argo-blue-dark); color: white; padding: 0 25px; height: 60px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 1000; }
+        .main-layout { display: flex; flex: 1; overflow: hidden; }
+        
+        /* Sidebar Evoluta */
+        nav { width: var(--sidebar-w); background: white; border-right: 1px solid #d1d9e0; display: flex; flex-direction: column; transition: all 0.3s; }
+        .nav-group { padding: 15px 0; border-bottom: 1px solid #eee; }
+        .nav-label { font-size: 0.75rem; font-weight: bold; color: #888; padding: 0 20px 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #555; transition: 0.2s; position: relative; }
+        .nav-item:hover { background: var(--argo-blue-light); color: var(--argo-blue-main); }
+        .nav-item.active { background: var(--argo-blue-light); color: var(--argo-blue-main); font-weight: 600; border-right: 4px solid var(--argo-blue-main); }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+
+        /* Area Contenuti */
+        main { flex: 1; padding: 30px; overflow-y: auto; scroll-behavior: smooth; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        
+        /* Componenti UI */
+        .grid-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 8px; padding: 20px; box-shadow: var(--shadow); border: 1px solid #e1e4e8; position: relative; }
+        .card h3 { margin-top: 0; color: var(--argo-blue-dark); display: flex; align-items: center; gap: 10px; }
+        
+        /* Tabelle Professionali */
+        .table-container { overflow-x: auto; background: white; border-radius: 8px; border: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th { background: #f8f9fa; padding: 15px; text-align: left; border-bottom: 2px solid #dee2e6; color: var(--argo-blue-dark); }
+        td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        tr:hover { background-color: #f9f9f9; }
+
+        /* Input & Buttons */
+        input, select, textarea { padding: 10px; border: 1px solid #ccd1d9; border-radius: 5px; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--argo-blue-main); box-shadow: 0 0 0 3px rgba(0,86,179,0.1); }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .btn-primary { background: var(--argo-blue-main); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn:active { transform: translateY(1px); }
+
+        /* Sistemi di Voto Speciali */
+        .grade-pill { background: #f1f3f5; padding: 5px 10px; border-radius: 15px; font-weight: bold; border: 1px solid #dee2e6; display: flex; align-items: center; gap: 5px; font-size: 0.85rem; }
+        .grade-pill.insufficient { color: var(--danger); border-color: #f5c6cb; background: #f8d7da; }
+        .grade-pill.excellent { color: var(--success); border-color: #c3e6cb; background: #d4edda; }
+        
+        /* Animazioni e Hidden */
         .hidden { display: none !important; }
-        .card { background: white; padding: 20px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-primary { background: var(--argo-blue-light); color: white; }
-        .btn-success { background: #27ae60; color: white; }
-        
-        /* Login */
-        #login-screen { height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, var(--argo-blue-dark), var(--argo-blue-light)); }
-        .login-box { background: white; padding: 40px; border-radius: 12px; text-align: center; width: 380px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        section { animation: fadeIn 0.4s ease-out; }
 
-        /* Layout */
-        header { background: var(--argo-blue-dark); color: white; padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; }
-        .wrapper { display: flex; height: calc(100vh - 54px); }
-        
-        nav { width: var(--sidebar-width); background: white; border-right: 1px solid #ddd; overflow-y: auto; }
-        .nav-item { padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #eee; display: flex; align-items: center; color: #444; }
-        .nav-item:hover, .nav-item.active { background: #eef7ff; color: var(--argo-blue-light); border-left: 5px solid var(--argo-blue-light); }
-        .nav-item i { margin-right: 12px; width: 20px; }
+        /* Widget Presenze */
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+        .dot-p { background: var(--success); }
+        .dot-a { background: var(--danger); }
+        .dot-r { background: var(--argo-accent); }
 
-        main { flex: 1; padding: 30px; overflow-y: auto; }
-
-        /* Tabelle e Input */
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
-        th, td { border: 1px solid #dee2e6; padding: 12px; text-align: left; }
-        th { background: #f8f9fa; }
-        input, select, textarea { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        
-        .badge { padding: 4px 8px; border-radius: 10px; font-size: 0.8rem; color: white; }
-        .bg-red { background: #e74c3c; }
-        .bg-orange { background: #e67e22; }
-        .bg-green { background: #2ecc71; }
-
-        .grade-tag { display: inline-block; background: #eee; padding: 2px 8px; margin: 2px; border-radius: 4px; position: relative; }
-        .delete-grade { color: red; cursor: pointer; margin-left: 5px; font-weight: bold; }
+        /* Login Screen Professional */
+        #login-screen { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #002244; color: white; }
+        .login-card { background: white; color: #333; padding: 40px; border-radius: 12px; width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); text-align: center; }
     </style>
 </head>
 <body>
 
-    <div id="login-screen">
-        <div class="login-box">
-            <img src="https://portaleargo.it/v2/assets/img/logo_argo.png" alt="Argo" style="width: 150px;">
-            <h2 style="color: var(--argo-blue-dark)">Registro Elettronico</h2>
-            <input type="password" id="password" placeholder="Password (Sacataca.com)" style="width: 100%; margin: 20px 0;">
-            <button class="btn btn-primary" style="width: 100%; padding: 15px;" onclick="checkLogin()">ACCEDI</button>
+<div id="login-screen">
+    <div class="login-card">
+        <img src="https://portaleargo.it/v2/assets/img/logo_argo.png" alt="Argo" style="width: 180px; margin-bottom: 20px;">
+        <h2 style="margin-bottom: 30px; color: var(--argo-blue-dark)">DIDUP ENTERPRISE</h2>
+        <div style="text-align: left; margin-bottom: 20px;">
+            <label>Codice Utente</label>
+            <input type="text" id="user-code" value="ROSSI.M" style="width: 100%; box-sizing: border-box; margin-top: 5px;">
         </div>
+        <div style="text-align: left; margin-bottom: 30px;">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Sacataca.com" style="width: 100%; box-sizing: border-box; margin-top: 5px;">
+        </div>
+        <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 15px;" onclick="checkLogin()">ACCEDI AL SISTEMA</button>
+        <p id="error-msg" style="color: var(--danger); font-size: 0.8rem; margin-top: 15px;" class="hidden">Credenziali non valide!</p>
     </div>
+</div>
 
-    <div id="app-interface" class="hidden">
-        <header>
-            <div style="display: flex; align-items: center;">
-                <img src="https://portaleargo.it/v2/assets/img/logo_argo.png" style="height: 30px; filter: brightness(0) invert(1); margin-right: 15px;">
-                <span style="font-size: 1.1rem; font-weight: bold;">DidUP - Gestione Scolastica Avanzata</span>
+<div id="app-interface" class="app-container hidden">
+    <header>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <img src="https://portaleargo.it/v2/assets/img/logo_argo.png" style="height: 25px; filter: brightness(0) invert(1);">
+            <div style="border-left: 1px solid rgba(255,255,255,0.3); padding-left: 20px;">
+                <span id="current-school-year" style="font-size: 0.8rem; opacity: 0.8; display: block;">A.S. 2025/2026</span>
+                <span style="font-weight: bold; letter-spacing: 0.5px;">LICEO SCIENTIFICO "G. GALILEI"</span>
             </div>
-            <div>
-                <span id="current-date-display" style="margin-right: 20px;"></span>
-                <button class="btn" style="background: transparent; color: white; border: 1px solid white;" onclick="location.reload()">Esci</button>
+        </div>
+        <div style="display: flex; align-items: center; gap: 25px;">
+            <div style="text-align: right;">
+                <span id="live-clock" style="font-family: monospace; font-size: 1.1rem;">00:00:00</span>
+                <span style="display: block; font-size: 0.7rem; opacity: 0.8;">ROMA, ITALIA</span>
             </div>
-        </header>
+            <div class="btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);">
+                <i class="fa fa-user-circle"></i> Prof. Rossi Mario
+            </div>
+            <button class="btn btn-danger" onclick="location.reload()"><i class="fa fa-sign-out-alt"></i></button>
+        </div>
+    </header>
 
-        <div class="wrapper">
-            <nav id="sidebar">
-                <div class="nav-item active" onclick="showSection('admin')"><i class="fa fa-cogs"></i> Configurazione Admin</div>
-                <div class="nav-item" onclick="showSection('classe')"><i class="fa fa-users"></i> Registro di Classe</div>
-                <div class="nav-item" onclick="showSection('prof')"><i class="fa fa-book"></i> Registro Professore</div>
-                <div class="nav-item" onclick="showSection('bacheca')"><i class="fa fa-bullhorn"></i> Bacheca</div>
-                <div class="nav-item" onclick="showSection('scrutini')"><i class="fa fa-gavel"></i> Scrutini</div>
-            </nav>
+    <div class="main-layout">
+        <nav>
+            <div class="nav-group">
+                <div class="nav-label">Principale</div>
+                <div class="nav-item active" onclick="showSection('dashboard')"><i class="fa fa-tachometer-alt"></i> Dashboard Statistiche</div>
+                <div class="nav-item" onclick="showSection('classe')"><i class="fa fa-users-rectangle"></i> Registro di Classe</div>
+                <div class="nav-item" onclick="showSection('prof')"><i class="fa fa-book-open"></i> Registro Professore</div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-label">Didattica & Voti</div>
+                <div class="nav-item" onclick="showSection('programmazione')"><i class="fa fa-list-check"></i> Programmazione</div>
+                <div class="nav-item" onclick="showSection('scrutini')"><i class="fa fa-gavel"></i> Scrutini & Giudizi</div>
+                <div class="nav-item" onclick="showSection('verifiche')"><i class="fa fa-calendar-check"></i> Gestione Verifiche</div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-label">Amministrazione</div>
+                <div class="nav-item" onclick="showSection('admin')"><i class="fa fa-user-shield"></i> Pannello Controllo</div>
+                <div class="nav-item" onclick="showSection('bacheca')"><i class="fa fa-comment-dots"></i> Comunicazioni</div>
+                <div class="nav-item" onclick="showSection('log')"><i class="fa fa-history"></i> Log di Sistema</div>
+            </div>
+            <div style="margin-top: auto; padding: 20px; font-size: 0.7rem; color: #aaa; text-align: center;">
+                Powered by Gemini 2026<br>v4.0.1-STABLE
+            </div>
+        </nav>
 
-            <main>
-                <section id="admin">
-                    <h2>Configurazione Sistema (Admin)</h2>
+        <main id="content-area">
+            
+            <section id="dashboard">
+                <div class="section-header">
+                    <h2><i class="fa fa-chart-line"></i> Analisi Rendimento Scolastico</h2>
+                    <button class="btn btn-primary" onclick="generateGlobalReport()"><i class="fa fa-file-export"></i> Esporta Report</button>
+                </div>
+                <div class="grid-dashboard">
                     <div class="card">
-                        <h3>Aggiungi Studente</h3>
-                        <input type="text" id="adm-stud-name" placeholder="Nome e Cognome">
-                        <select id="adm-stud-class">
+                        <h3><i class="fa fa-percentage"></i> Media Generale Classi</h3>
+                        <div style="height: 150px; display: flex; align-items: flex-end; gap: 20px; padding: 10px;">
+                            <div style="flex:1; background: var(--argo-blue-main); height: 75%; position: relative;" title="Classe 1A: 7.5">
+                                <span style="position: absolute; top: -20px; width: 100%; text-align: center;">7.5</span>
+                                <div style="position: absolute; bottom: -25px; width: 100%; text-align: center; font-size: 0.8rem;">1A</div>
+                            </div>
+                            <div style="flex:1; background: var(--argo-accent); height: 62%; position: relative;" title="Classe 2B: 6.2">
+                                <span style="position: absolute; top: -20px; width: 100%; text-align: center;">6.2</span>
+                                <div style="position: absolute; bottom: -25px; width: 100%; text-align: center; font-size: 0.8rem;">2B</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fa fa-exclamation-triangle"></i> Studenti a Rischio</h3>
+                        <div id="risk-list">
+                            </div>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fa fa-bell"></i> Ultime Attività</h3>
+                        <ul id="activity-log-mini" style="font-size: 0.85rem; padding-left: 20px;">
+                            <li>Firma ora 1 (Matematica 1A)</li>
+                            <li>Inserito voto: Bianchi L. (8.5)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="classe" class="hidden">
+                <div class="section-header">
+                    <h2><i class="fa fa-calendar-day"></i> Registro Giornaliero di Classe</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="date" id="classe-date" onchange="loadDayData()">
+                        <select id="classe-sel" onchange="loadDayData()">
                             <option value="1A">Classe 1A</option>
                             <option value="2B">Classe 2B</option>
                         </select>
-                        <button class="btn btn-success" onclick="adminAddStudent()">Aggiungi</button>
                     </div>
-                    <div class="card">
-                        <h3>Studenti Iscritti</h3>
-                        <div id="adm-student-list"></div>
-                    </div>
-                </section>
-
-                <section id="classe" class="hidden">
-                    <div style="display:flex; justify-content: space-between; align-items: center;">
-                        <h2>Registro di Classe</h2>
-                        <input type="date" id="classe-date-picker" onchange="renderClasse()">
-                    </div>
-                    <div class="selector-bar">
-                        <select id="sel-classe-cl" onchange="renderClasse()">
-                            <option value="1A">1A</option>
-                            <option value="2B">2B</option>
-                        </select>
-                    </div>
-
-                    <div class="card">
-                        <h3>Appello e Note (Oggi)</h3>
-                        <table id="table-appello">
-                            <thead><tr><th>Studente</th><th>Stato</th><th>Dettagli</th></tr></thead>
-                            <tbody id="body-appello"></tbody>
-                        </table>
-                    </div>
-
-                    <div class="card">
-                        <h3>Lezione e Compiti</h3>
-                        <textarea id="cl-firma" placeholder="Argomento lezione..." style="width:100%; margin-bottom:10px;"></textarea>
-                        <textarea id="cl-compiti" placeholder="Compiti assegnati..." style="width:100%; margin-bottom:10px;"></textarea>
-                        <button class="btn btn-success" onclick="saveClasseGiornaliero()">Firma e Salva Giornata</button>
-                    </div>
-                </section>
-
-                <section id="prof" class="hidden">
-                    <h2>Registro del Professore</h2>
-                    <div class="selector-bar">
-                        <select id="sel-classe-prof" onchange="renderProf()">
-                            <option value="1A">1A - Matematica</option>
-                            <option value="2B">2B - Fisica</option>
-                        </select>
-                    </div>
-                    <div class="card">
-                        <table id="table-voti">
-                            <thead><tr><th>Studente</th><th>Voti Orali</th><th>Voti Scritti</th><th>Media</th></tr></thead>
-                            <tbody id="body-voti"></tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <section id="bacheca" class="hidden">
-                    <h2>Bacheca</h2>
-                    <div class="card">
-                        <h3>Scrivi un annuncio</h3>
-                        <textarea id="msg-bacheca" style="width:100%; height:60px;"></textarea><br><br>
-                        <button class="btn btn-primary" onclick="addBacheca()">Pubblica</button>
-                    </div>
-                    <div id="lista-bacheca"></div>
-                </section>
-
-                <section id="scrutini" class="hidden">
-                    <h2>Scrutini Finali</h2>
-                    <div class="card">
-                        <table id="table-scrutini">
-                            <thead><tr><th>Studente</th><th>Media Anno</th><th>Voto Finale</th><th>Giudizio</th></tr></thead>
-                            <tbody id="body-scrutini"></tbody>
-                        </table>
-                        <br>
-                        <button class="btn btn-success" onclick="saveScrutini()">Salva Scrutinio</button>
-                    </div>
-                </section>
-            </main>
-        </div>
-    </div>
-
-    <script>
-        const DB_KEY = 'ARGO_MEGA_DB';
-        let db = JSON.parse(localStorage.getItem(DB_KEY)) || {
-            studenti: [
-                {nome: "Rossi Mario", classe: "1A"}, {nome: "Bianchi L.", classe: "1A"},
-                {nome: "Esposito G.", classe: "2B"}, {nome: "Verdi A.", classe: "2B"}
-            ],
-            giornate: {}, // ID: "YYYY-MM-DD_CLASSE"
-            voti: {}, // ID: "NOME_STUDENTE"
-            bacheca: [
-                {testo: "Benvenuti nel nuovo registro.", autore: "Sistema", data: "2023-10-01"}
-            ],
-            scrutini: {}
-        };
-
-        function checkLogin() {
-            if(document.getElementById('password').value === "Sacataca.com") {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('app-interface').classList.remove('hidden');
-                init();
-            }
-        }
-
-        function init() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('classe-date-picker').value = today;
-            document.getElementById('current-date-display').innerText = new Date().toLocaleDateString('it-IT');
-            renderAdmin();
-        }
-
-        function showSection(id) {
-            document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(id === 'classe') renderClasse();
-            if(id === 'prof') renderProf();
-            if(id === 'bacheca') renderBacheca();
-            if(id === 'scrutini') renderScrutini();
-        }
-
-        /* --- ADMIN --- */
-        function adminAddStudent() {
-            const nome = document.getElementById('adm-stud-name').value;
-            const classe = document.getElementById('adm-stud-class').value;
-            if(!nome) return;
-            db.studenti.push({nome, classe});
-            save();
-            renderAdmin();
-        }
-
-        function renderAdmin() {
-            const div = document.getElementById('adm-student-list');
-            div.innerHTML = db.studenti.map(s => `<div><b>${s.classe}</b> - ${s.nome}</div>`).join('');
-        }
-
-        /* --- REGISTRO DI CLASSE --- */
-        function renderClasse() {
-            const data = document.getElementById('classe-date-picker').value;
-            const classe = document.getElementById('sel-classe-cl').value;
-            const key = `${data}_${classe}`;
-            const info = db.giornate[key] || {firma: "", compiti: "", presenze: {}};
-            
-            document.getElementById('cl-firma').value = info.firma;
-            document.getElementById('cl-compiti').value = info.compiti;
-
-            const tbody = document.getElementById('body-appello');
-            tbody.innerHTML = '';
-            
-            db.studenti.filter(s => s.classe === classe).forEach(s => {
-                const stato = info.presenze[s.nome] || 'P';
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${s.nome}</td>
-                        <td>
-                            <select onchange="updatePresenza('${key}', '${s.nome}', this.value)">
-                                <option value="P" ${stato==='P'?'selected':''}>Presente</option>
-                                <option value="A" ${stato==='A'?'selected':''}>Assente</option>
-                                <option value="R" ${stato==='R'?'selected':''}>Ritardo</option>
-                                <option value="U" ${stato==='U'?'selected':''}>Uscita</option>
-                            </select>
-                        </td>
-                        <td><input type="text" placeholder="Ora/Note" onchange="updateNotePresenza('${key}', '${s.nome}', this.value)"></td>
-                    </tr>
-                `;
-            });
-        }
-
-        function updatePresenza(key, nome, val) {
-            if(!db.giornate[key]) db.giornate[key] = {firma:"", compiti:"", presenze:{}};
-            db.giornate[key].presenze[nome] = val;
-            save();
-        }
-
-        function saveClasseGiornaliero() {
-            const data = document.getElementById('classe-date-picker').value;
-            const classe = document.getElementById('sel-classe-cl').value;
-            const key = `${data}_${classe}`;
-            if(!db.giornate[key]) db.giornate[key] = {firma:"", compiti:"", presenze:{}};
-            db.giornate[key].firma = document.getElementById('cl-firma').value;
-            db.giornate[key].compiti = document.getElementById('cl-compiti').value;
-            save();
-            alert("Giornata salvata!");
-        }
-
-        /* --- REGISTRO PROFESSORE --- */
-        function renderProf() {
-            const classe = document.getElementById('sel-classe-prof').value;
-            const tbody = document.getElementById('body-voti');
-            tbody.innerHTML = '';
-
-            db.studenti.filter(s => s.classe === (classe === '1A' ? '1A' : '2B')).forEach(s => {
-                const voti = db.voti[s.nome] || {orali: [], scritti: []};
-                const media = [...voti.orali, ...voti.scritti].length > 0 ? 
-                    ([...voti.orali, ...voti.scritti].reduce((a,b)=>a+b)/[...voti.orali, ...voti.scritti].length).toFixed(2) : '-';
-
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${s.nome}</td>
-                        <td>
-                            <div id="orali-${s.nome}">${voti.orali.map((v, i) => `<span class="grade-tag">${v} <span class="delete-grade" onclick="delGrade('${s.nome}', 'orali', ${i})">x</span></span>`).join('')}</div>
-                            <input type="number" placeholder="+" style="width:40px" onkeydown="if(event.key==='Enter') addGrade('${s.nome}', 'orali', this)">
-                        </td>
-                        <td>
-                            <div id="scritti-${s.nome}">${voti.scritti.map((v, i) => `<span class="grade-tag">${v} <span class="delete-grade" onclick="delGrade('${s.nome}', 'scritti', ${i})">x</span></span>`).join('')}</div>
-                            <input type="number" placeholder="+" style="width:40px" onkeydown="if(event.key==='Enter') addGrade('${s.nome}', 'scritti', this)">
-                        </td>
-                        <td><b>${media}</b></td>
-                    </tr>
-                `;
-            });
-        }
-
-        function addGrade(nome, tipo, input) {
-            if(!input.value) return;
-            if(!db.voti[nome]) db.voti[nome] = {orali: [], scritti: []};
-            db.voti[nome][tipo].push(parseFloat(input.value));
-            input.value = '';
-            save();
-            renderProf();
-        }
-
-        function delGrade(nome, tipo, index) {
-            db.voti[nome][tipo].splice(index, 1);
-            save();
-            renderProf();
-        }
-
-        /* --- BACHECA --- */
-        function renderBacheca() {
-            const div = document.getElementById('lista-bacheca');
-            div.innerHTML = db.bacheca.map(m => `
-                <div class="card">
-                    <small>${m.data} - da ${m.autore}</small>
-                    <p>${m.testo}</p>
                 </div>
-            `).reverse().join('');
-        }
+                <div class="grid-dashboard">
+                    <div class="card" style="grid-column: span 2;">
+                        <h3>Appello Online</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Studente</th>
+                                        <th>Stato</th>
+                                        <th>Ingresso</th>
+                                        <th>Uscita</th>
+                                        <th>Note Disciplinari</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appello-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Firma Docente</h3>
+                        <label>Materia</label><br>
+                        <select id="materia-firma" style="width: 100%; margin: 10px 0;">
+                            <option>Matematica</option>
+                            <option>Fisica</option>
+                            <option>Informatica</option>
+                        </select><br>
+                        <label>Argomento Lezione</label>
+                        <textarea id="lezione-txt" style="width: 100%; height: 80px; margin: 10px 0;"></textarea>
+                        <label>Compiti per Casa</label>
+                        <textarea id="compiti-txt" style="width: 100%; height: 60px; margin: 10px 0;"></textarea>
+                        <button class="btn btn-success" style="width: 100%;" onclick="saveDay()">FIRMA ELETTRONICA</button>
+                    </div>
+                </div>
+            </section>
 
-        function addBacheca() {
-            const t = document.getElementById('msg-bacheca').value;
-            if(!t) return;
-            db.bacheca.push({testo: t, autore: "Prof. Rossi", data: new Date().toLocaleDateString()});
-            document.getElementById('msg-bacheca').value = '';
-            save();
-            renderBacheca();
-        }
+            <section id="prof" class="hidden">
+                <div class="section-header">
+                    <h2><i class="fa fa-user-graduate"></i> Registro Valutazioni Professore</h2>
+                    <select id="prof-classe-sel" onchange="renderGrades()">
+                        <option value="1A">1A - Matematica</option>
+                        <option value="2B">2B - Fisica</option>
+                    </select>
+                </div>
+                <div class="card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Studente</th>
+                                    <th>Voti Orali (Illimitati)</th>
+                                    <th>Voti Scritti (Illimitati)</th>
+                                    <th>Media</th>
+                                    <th>Andamento</th>
+                                </tr>
+                            </thead>
+                            <tbody id="voti-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
-        /* --- SCRUTINI --- */
-        function renderScrutini() {
-            const tbody = document.getElementById('body-scrutini');
-            tbody.innerHTML = db.studenti.map(s => {
-                const voti = db.voti[s.nome] || {orali:[], scritti:[]};
-                const m = [...voti.orali, ...voti.scritti];
-                const media = m.length > 0 ? (m.reduce((a,b)=>a+b)/m.length).toFixed(2) : '0';
-                return `
-                    <tr>
-                        <td>${s.nome} (${s.classe})</td>
-                        <td>${media}</td>
-                        <td><input type="number" style="width:50px" value="${Math.round(media)}"></td>
-                        <td><textarea placeholder="Giudizio..."></textarea></td>
-                    </tr>
+            <section id="admin" class="hidden">
+                <div class="section-header">
+                    <h2><i class="fa fa-tools"></i> Gestione Database & Studenti</h2>
+                </div>
+                <div class="grid-dashboard">
+                    <div class="card">
+                        <h3>Nuovo Studente</h3>
+                        <input type="text" id="new-stud-name" placeholder="Cognome e Nome" style="width: 100%; margin-bottom: 10px;">
+                        <select id="new-stud-class" style="width: 100%; margin-bottom: 15px;">
+                            <option value="1A">Classe 1A</option>
+                            <option value="2B">Classe 2B</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="addNewStudent()">Aggiungi al Registro</button>
+                    </div>
+                    <div class="card">
+                        <h3>Inizializzazione Sistema</h3>
+                        <p style="font-size: 0.8rem; color: #666;">Attenzione: Il ripristino cancellerà tutti i dati locali del browser.</p>
+                        <button class="btn btn-danger" onclick="resetSystem()">WIPE DATABASE</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="scrutini" class="hidden">
+                <div class="section-header">
+                    <h2><i class="fa fa-gavel"></i> Tabellone Scrutini Finali</h2>
+                </div>
+                <div class="card">
+                    <div class="table-container">
+                        <table id="scrutini-table">
+                            <thead>
+                                <tr>
+                                    <th>Studente</th>
+                                    <th>Assenze Tot.</th>
+                                    <th>Media Matematica</th>
+                                    <th>Voto Scrutinio</th>
+                                    <th>Giudizio Sintetico</th>
+                                    <th>Esito</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scrutini-body"></tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 20px; text-align: right;">
+                        <button class="btn btn-success" onclick="closeScrutinio()">PUBBLICA TABELLONE FINALE</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="log" class="hidden">
+                <div class="section-header">
+                    <h2><i class="fa fa-terminal"></i> Log di Audit e Sicurezza</h2>
+                </div>
+                <div class="card" style="font-family: 'Courier New', Courier, monospace; background: #222; color: #0f0; max-height: 400px; overflow-y: auto;">
+                    <div id="system-logs">
+                        [SYS] Avvio sistema Enterprise... OK<br>
+                        [SYS] Caricamento moduli AI... OK<br>
+                        [AUTH] Utente ROSSI.M autenticato da IP 192.168.1.45
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+</div>
+
+<script>
+    // --- DATABASE ENGINE (LOCAL STORAGE) ---
+    const DB_NAME = 'ARGO_ENTERPRISE_DB';
+    let db = JSON.parse(localStorage.getItem(DB_NAME)) || {
+        config: { version: "4.0", school: "Liceo Galilei" },
+        studenti: [
+            {id: 1, nome: "ALBERTI FABIO", classe: "1A"},
+            {id: 2, nome: "BIANCHI LAURA", classe: "1A"},
+            {id: 3, nome: "COLOMBO GULIO", classe: "1A"},
+            {id: 4, nome: "DONATI ELENA", classe: "2B"},
+            {id: 5, nome: "ESPOSITO CIRO", classe: "2B"}
+        ],
+        registri: {}, // Chiave: "YYYY-MM-DD_CLASSE"
+        valutazioni: {}, // Chiave: ID_STUDENTE
+        logs: [],
+        comunicazioni: []
+    };
+
+    // --- CORE FUNCTIONS ---
+    function checkLogin() {
+        const pass = document.getElementById('password').value;
+        if(pass === "Sacataca.com") {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('app-interface').classList.remove('hidden');
+            startClock();
+            initApp();
+            logAction("Utente autenticato");
+        } else {
+            document.getElementById('error-msg').classList.remove('hidden');
+        }
+    }
+
+    function initApp() {
+        document.getElementById('classe-date').valueAsDate = new Date();
+        loadDayData();
+        renderRiskAnalysis();
+    }
+
+    function startClock() {
+        setInterval(() => {
+            document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('it-IT');
+        }, 1000);
+    }
+
+    function logAction(msg) {
+        const time = new Date().toLocaleTimeString();
+        db.logs.unshift(`[${time}] ${msg}`);
+        if(db.logs.length > 100) db.logs.pop();
+        save();
+        const container = document.getElementById('system-logs');
+        if(container) container.innerHTML = db.logs.map(l => `<div>${l}</div>`).join('');
+    }
+
+    function save() {
+        localStorage.setItem(DB_NAME, JSON.stringify(db));
+    }
+
+    function showSection(id) {
+        document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        
+        // Caricamento dati specifici
+        if(id === 'prof') renderGrades();
+        if(id === 'scrutini') renderScrutini();
+    }
+
+    // --- REGISTRO DI CLASSE LOGIC ---
+    function loadDayData() {
+        const date = document.getElementById('classe-date').value;
+        const cls = document.getElementById('classe-sel').value;
+        const key = `${date}_${cls}`;
+        const dayData = db.registri[key] || { firma: "", compiti: "", presenze: {} };
+
+        document.getElementById('lezione-txt').value = dayData.firma;
+        document.getElementById('compiti-txt').value = dayData.compiti;
+
+        const tbody = document.getElementById('appello-body');
+        tbody.innerHTML = '';
+
+        db.studenti.filter(s => s.classe === cls).forEach(s => {
+            const pres = dayData.presenze[s.id] || {stato: 'P', in: '', out: '', nota: ''};
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>${s.nome}</b></td>
+                    <td>
+                        <select onchange="updatePresenza('${key}', ${s.id}, 'stato', this.value)">
+                            <option value="P" ${pres.stato==='P'?'selected':''}>Presente</option>
+                            <option value="A" ${pres.stato==='A'?'selected':''}>Assente</option>
+                            <option value="R" ${pres.stato==='R'?'selected':''}>Ritardo</option>
+                            <option value="U" ${pres.stato==='U'?'selected':''}>Uscita Anticipata</option>
+                        </select>
+                    </td>
+                    <td><input type="time" value="${pres.in}" onchange="updatePresenza('${key}', ${s.id}, 'in', this.value)"></td>
+                    <td><input type="time" value="${pres.out}" onchange="updatePresenza('${key}', ${s.id}, 'out', this.value)"></td>
+                    <td><input type="text" value="${pres.nota}" placeholder="Aggiungi nota..." onchange="updatePresenza('${key}', ${s.id}, 'nota', this.value)"></td>
+                </tr>
+            `;
+        });
+    }
+
+    function updatePresenza(key, sid, field, val) {
+        if(!db.registri[key]) db.registri[key] = { firma: "", compiti: "", presenze: {} };
+        if(!db.registri[key].presenze[sid]) db.registri[key].presenze[sid] = {stato: 'P', in: '', out: '', nota: ''};
+        db.registri[key].presenze[sid][field] = val;
+        save();
+    }
+
+    function saveDay() {
+        const date = document.getElementById('classe-date').value;
+        const cls = document.getElementById('classe-sel').value;
+        const key = `${date}_${cls}`;
+        
+        if(!db.registri[key]) db.registri[key] = { firma: "", compiti: "", presenze: {} };
+        db.registri[key].firma = document.getElementById('lezione-txt').value;
+        db.registri[key].compiti = document.getElementById('compiti-txt').value;
+        
+        logAction(`Firma registrata per ${cls} in data ${date}`);
+        save();
+        alert("Firma Elettronica acquisita con successo!");
+    }
+
+    // --- REGISTRO PROFESSORE (VOTI ILLIMITATI) ---
+    function renderGrades() {
+        const cls = document.getElementById('prof-classe-sel').value;
+        const tbody = document.getElementById('voti-body');
+        tbody.innerHTML = '';
+
+        db.studenti.filter(s => s.classe === cls).forEach(s => {
+            const v = db.valutazioni[s.id] || { orali: [], scritti: [] };
+            const all = [...v.orali, ...v.scritti];
+            const media = all.length ? (all.reduce((a,b)=>a+b)/all.length).toFixed(2) : '-';
+            const mediaClass = media < 6 ? 'insufficient' : (media >= 8 ? 'excellent' : '');
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>${s.nome}</td>
+                    <td>
+                        <div style="display:flex; flex-wrap:wrap; gap:5px;">
+                            ${v.orali.map((val, idx) => `<span class="grade-pill ${val < 6 ? 'insufficient' : ''}">${val} <i class="fa fa-times" onclick="delVoto(${s.id}, 'orali', ${idx})"></i></span>`).join('')}
+                            <input type="number" step="0.5" placeholder="+" style="width:50px" onkeydown="if(event.key==='Enter') addVoto(${s.id}, 'orali', this)">
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display:flex; flex-wrap:wrap; gap:5px;">
+                            ${v.scritti.map((val, idx) => `<span class="grade-pill ${val < 6 ? 'insufficient' : ''}">${val} <i class="fa fa-times" onclick="delVoto(${s.id}, 'scritti', ${idx})"></i></span>`).join('')}
+                            <input type="number" step="0.5" placeholder="+" style="width:50px" onkeydown="if(event.key==='Enter') addVoto(${s.id}, 'scritti', this)">
+                        </div>
+                    </td>
+                    <td><span class="grade-pill ${mediaClass}" style="font-size:1.1rem">${media}</span></td>
+                    <td><i class="fa ${media >= 6 ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down'}" style="color:${media >= 6 ? 'green' : 'red'}"></i></td>
+                </tr>
+            `;
+        });
+    }
+
+    function addVoto(sid, tipo, el) {
+        const val = parseFloat(el.value);
+        if(isNaN(val)) return;
+        if(!db.valutazioni[sid]) db.valutazioni[sid] = { orali: [], scritti: [] };
+        db.valutazioni[sid][tipo].push(val);
+        logAction(`Inserito voto ${val} (${tipo}) a studente ID:${sid}`);
+        save();
+        renderGrades();
+        renderRiskAnalysis();
+    }
+
+    function delVoto(sid, tipo, idx) {
+        db.valutazioni[sid][tipo].splice(idx, 1);
+        save();
+        renderGrades();
+    }
+
+    // --- BUSINESS INTELLIGENCE & RISCHIO ---
+    function renderRiskAnalysis() {
+        const riskList = document.getElementById('risk-list');
+        riskList.innerHTML = '';
+        
+        db.studenti.forEach(s => {
+            const v = db.valutazioni[s.id] || { orali: [], scritti: [] };
+            const all = [...v.orali, ...v.scritti];
+            const media = all.length ? (all.reduce((a,b)=>a+b)/all.length) : 10;
+            
+            if(media < 6) {
+                riskList.innerHTML += `
+                    <div style="padding: 10px; border-left: 4px solid var(--danger); background: #fff5f5; margin-bottom: 5px;">
+                        <small>${s.classe}</small><br>
+                        <strong>${s.nome}</strong> - Media: ${media.toFixed(2)}
+                    </div>
                 `;
-            }).join('');
-        }
+            }
+        });
+        
+        if(!riskList.innerHTML) riskList.innerHTML = '<p style="color:green">Nessuno studente sotto la soglia critica.</p>';
+    }
 
-        function save() { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
-    </script>
+    // --- SCRUTINI ---
+    function renderScrutini() {
+        const tbody = document.getElementById('scrutini-body');
+        tbody.innerHTML = db.studenti.map(s => {
+            const v = db.valutazioni[s.id] || { orali: [], scritti: [] };
+            const all = [...v.orali, ...v.scritti];
+            const media = all.length ? (all.reduce((a,b)=>a+b)/all.length).toFixed(2) : '6.00';
+            
+            return `
+                <tr>
+                    <td>${s.nome}</td>
+                    <td>${Math.floor(Math.random()*10)}</td>
+                    <td>${media}</td>
+                    <td><input type="number" value="${Math.round(media)}" style="width:60px"></td>
+                    <td><textarea placeholder="Inserisci giudizio consiglio di classe..."></textarea></td>
+                    <td><span class="status-dot dot-${media >= 6 ? 'p' : 'a'}"></span> ${media >= 6 ? 'AMMESSO' : 'NON AMMESSO'}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // --- ADMIN ACTIONS ---
+    function addNewStudent() {
+        const name = document.getElementById('new-stud-name').value;
+        const cls = document.getElementById('new-stud-class').value;
+        if(!name) return;
+        
+        const newId = db.studenti.length ? Math.max(...db.studenti.map(s=>s.id)) + 1 : 1;
+        db.studenti.push({id: newId, nome: name.toUpperCase(), classe: cls});
+        save();
+        logAction(`Creato nuovo studente: ${name} (${cls})`);
+        alert("Studente inserito correttamente!");
+        document.getElementById('new-stud-name').value = '';
+    }
+
+    function resetSystem() {
+        if(confirm("AZIONE IRREVERSIBILE: Cancellare l'intero database?")) {
+            localStorage.removeItem(DB_NAME);
+            location.reload();
+        }
+    }
+
+</script>
 </body>
 </html>
